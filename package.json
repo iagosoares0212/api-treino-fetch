@@ -1,0 +1,24 @@
+{
+  "name": "api-treino-fetch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "json-server --watch db.json --port 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iagosoares0212/api-treino-fetch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iagosoares0212/api-treino-fetch/issues"
+  },
+  "homepage": "https://github.com/iagosoares0212/api-treino-fetch#readme",
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}
