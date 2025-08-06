@@ -1,22 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Posts</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
+
 <body>
     <h1>Posts</h1>
     <ul id="lista-post"></ul>
-    
+
     <h2>Novo Post</h2>
     <input type="text" id="titulo" placeholder="Título do Post">
     <button onclick="criarPost()">Adicionar</button>
 
     <script>
         const url = 'http://localhost:3000/posts';
-        
+
+        function carregarPosts() {
+            fetch(url)
+                .then(res => res.json())
+                .then(posts => {
+                    const lista = document.getElementById('lista-post');
+                    lista.innerHTML = '';
+                    posts.forEach(post => {
+                        const li = document.createElement('li');
+                        li.textContent = post.title;
+                        lista.appendChild(li);
+                    });
+                });
+        }
+
+        function criarPost() {
+            const titulo = document.getElementById('titulo').value;
+            fetch(URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: titulo,
+                    body: 'Conteúdo criado via fetch',
+                    userId: 1
+                })
+            })
+                .then(res => res.json())
+                .then(() => {
+                    document.getElementById('titulo').value = '';
+                    carregarPosts();
+                });
+        }
+
+        carregarPosts();
+
     </script>
 
 </body>
+
 </html>
