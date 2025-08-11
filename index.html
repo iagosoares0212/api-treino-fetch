@@ -1,60 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Posts</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <title>Lista de Posts</title>
 </head>
-
 <body>
-    <h1>Posts</h1>
-    <ul id="lista-post"></ul>
+  <h1>Posts</h1>
 
-    <h2>Novo Post</h2>
-    <input type="text" id="titulo" placeholder="Título do Post">
-    <button onclick="criarPost()">Adicionar</button>
+  <!-- Lista onde vamos renderizar os posts vindos da API -->
+  <ul id="lista-posts"></ul>
 
-    <script>
-        const url = 'http://localhost:3000/posts';
+  <h2>Novo Post</h2>
+  <!-- Campo de texto para digitar o título do post -->
+  <input type="text" id="titulo" placeholder="Título do post">
+  <!-- Botão que chama a função de criar post -->
+  <button onclick="criarPost()">Adicionar</button>
 
-        function carregarPosts() {
-            fetch(url)
-                .then(res => res.json())
-                .then(posts => {
-                    const lista = document.getElementById('lista-post');
-                    lista.innerHTML = '';
-                    posts.forEach(post => {
-                        const li = document.createElement('li');
-                        li.textContent = post.title;
-                        lista.appendChild(li);
-                    });
-                });
-        }
+  <script>
+    // ===============================
+    // CONFIGURAÇÃO DA API
+    // ===============================
+    // Aqui definimos a URL da API do json-server
+    // Evitamos usar o nome "URL" para não conflitar com a função nativa do JS
+    const API_URL = 'http://localhost:3000/posts';
 
-        function criarPost() {
-            const titulo = document.getElementById('titulo').value;
-            fetch(URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: titulo,
-                    body: 'Conteúdo criado via fetch',
-                    userId: 1
-                })
-            })
-                .then(res => res.json())
-                .then(() => {
-                    document.getElementById('titulo').value = '';
-                    carregarPosts();
-                });
-        }
+    // ===============================
+    // FUNÇÃO PARA CARREGAR POSTS (GET)
+    // ===============================
+    function carregarPosts() {
+      fetch(API_URL) // Faz uma requisição GET para a API
+        .then(res => res.json()) // Converte a resposta para JSON
+        .then(posts => {
+          const lista = document.getElementById('lista-posts');
+          lista.innerHTML = ''; // Limpa a lista antes de adicionar novos itens
 
-        carregarPosts();
+          // Percorre cada post recebido e cria um <li> na lista
+          posts.forEach(post => {
+            const li = document.createElement('li');
+            li.textContent = post.title; // Mostra apenas o título
+            lista.appendChild(li);
+          });
+        })
+        .catch(err => console.error('Erro ao carregar posts:', err));
+    }
 
-    </script>
+    // ===============================
+    // FUNÇÃO PARA CRIAR POST (POST)
+    // ===============================
+    function criarPost() {
+      const titulo = document.getElementById('titulo').value.trim();
 
+      // Validação simples: se o título estiver vazio, não envia
+      if (!titulo) {
+        alert('Digite um título antes de enviar!');
+        return;
+      }
+
+      // Faz uma requisição POST para a API
+      fetch(API_URL, {
+        method: 'POST', // Método HTTP
+        headers: {
+          'Content-Type': 'application/json' // Tipo de conteúdo que estamos enviando
+        },
+        body: JSON.stringify({
+          title: titulo,            // Campo título
+          body: 'Post criado via fetch', // Conteúdo fixo (pode ser alterado)
+          userId: 1                 // Apenas um exemplo de campo extra
+        })
+      })
+      .then(res => res.json()) // Converte a resposta para JSON
+      .then(data => {
+        console.log('Post criado:', data);
+        document.getElementById('titulo').value = ''; // Limpa o campo
+        carregarPosts(); // Recarrega a lista para incluir o novo post
+      })
+      .catch(err => console.error('Erro ao criar post:', err));
+    }
+
+    // ===============================
+    // CARREGAR POSTS AUTOMATICAMENTE
+    // ===============================
+    // Quando a página for carregada, já exibe os posts
+    carregarPosts();
+    
+  </script>
 </body>
-
 </html>
