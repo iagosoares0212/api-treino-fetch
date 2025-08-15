@@ -6,10 +6,8 @@
 </head>
 <body>
   <h1>Posts</h1>
-
   <!-- Lista onde vamos renderizar os posts vindos da API -->
   <ul id="lista-posts"></ul>
-
   <h2>Novo Post</h2>
   <!-- Campo de texto para digitar o título do post -->
   <input type="text" id="titulo" placeholder="Título do post">
@@ -23,7 +21,6 @@
     // Aqui definimos a URL da API do json-server
     // Evitamos usar o nome "URL" para não conflitar com a função nativa do JS
     const API_URL = 'http://localhost:3000/posts';
-
     // ===============================
     // FUNÇÃO PARA CARREGAR POSTS (GET)
     // ===============================
@@ -49,44 +46,50 @@
             // usando o nome post para se referir a esse elemento.
             const li = document.createElement('li'); // cria um elemento html via js que possui a tag <li> ,ou seja, um elemento de uma lista e armazena na variável "li"
             li.textContent = post.title; // Essa linha está pegando o título do objeto post e colocando como texto dentro de um item da lista (<li>)
-            lista.appendChild(li);
+            lista.appendChild(li); // insere o <li> recém-criado como filho da <ul id="lista-posts">
             
           });
         })
-        .catch(err => console.error('Erro ao carregar posts:', err));
+        .catch(err => console.error('Erro ao carregar posts:', err)); // captura qualquer erro da cadeia (fetch, .json(), ou do próprio .then).
+        // imprime no console uma mensagem + o objeto de erro.
     }
 
     // ===============================
     // FUNÇÃO PARA CRIAR POST (POST)
     // ===============================
     function criarPost() {
-      const titulo = document.getElementById('titulo').value.trim();
-
+      const titulo = document.getElementById('titulo').value.trim(); //pega o input <input id="titulo">.
+      // lê o valor digitado (.value).
+      // trim() remove espaços do começo e do fim (evita enviar " ").
       // Validação simples: se o título estiver vazio, não envia
       if (!titulo) {
-        alert('Digite um título antes de enviar!');
+        alert('Digite um título antes de enviar!'); //validação: se titulo for string vazia ("" é falsy),
+        //mostra um alert e interrompe a função com return.
         return;
       }
 
       // Faz uma requisição POST para a API
-      fetch(API_URL, {
+      fetch(API_URL, { 
         method: 'POST', // Método HTTP
         headers: {
-          'Content-Type': 'application/json' // Tipo de conteúdo que estamos enviando
+          'Content-Type': 'application/json' // Tipo de conteúdo que estamos enviando: informa que o corpo é JSON.
         },
-        body: JSON.stringify({
-          title: titulo,            // Campo título
+        body: JSON.stringify({ // envia o objeto convertido para string JSON.
+          title: titulo,            // Campo título: recebe o que o usuário digitou;
           body: 'Post criado via fetch', // Conteúdo fixo (pode ser alterado)
           userId: 1                 // Apenas um exemplo de campo extra
         })
       })
       .then(res => res.json()) // Converte a resposta para JSON
-      .then(data => {
-        console.log('Post criado:', data);
-        document.getElementById('titulo').value = ''; // Limpa o campo
+      .then(data => { //data é o JSON retornado pelo servidor (no json-server, geralmente inclui um id)
+        console.log('Post criado:', data); // Essa linha serve só para depuração — ajuda o programador 
+        // a verificar que o POST deu certo e a ver exatamente o que o servidor retornou. Ela aparece 
+        // rapidamente no console
+        document.getElementById('titulo').value = ''; // limpa o input, colocando ''.
         carregarPosts(); // Recarrega a lista para incluir o novo post
       })
-      .catch(err => console.error('Erro ao criar post:', err));
+      .catch(err => console.error('Erro ao criar post:', err)); //trata erros do fetch/parsing/then 
+      // desta cadeia e loga no console.
     }
 
     // ===============================

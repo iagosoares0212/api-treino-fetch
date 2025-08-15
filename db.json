@@ -45,6 +45,42 @@
       "title": "Post 8",
       "body": "Post criado via fetch",
       "userId": 1
+    },
+    {
+      "id": "387a",
+      "title": "A",
+      "body": "Post criado via fetch",
+      "userId": 1
+    },
+    {
+      "id": "7924",
+      "title": "A",
+      "body": "Post criado via fetch",
+      "userId": 1
+    },
+    {
+      "id": "583a",
+      "title": "A A",
+      "body": "Post criado via fetch",
+      "userId": 1
+    },
+    {
+      "id": "d69e",
+      "title": "oLAR",
+      "body": "Post criado via fetch",
+      "userId": 1
+    },
+    {
+      "id": "c978",
+      "title": "a",
+      "body": "Post criado via fetch",
+      "userId": 1
+    },
+    {
+      "id": "66fb",
+      "title": "a",
+      "body": "Post criado via fetch",
+      "userId": 1
     }
   ]
 }
