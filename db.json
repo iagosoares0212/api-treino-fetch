@@ -39,6 +39,12 @@
       "title": "Post 7",
       "body": "Post criado via fetch",
       "userId": 1
+    },
+    {
+      "id": "475d",
+      "title": "Post 8",
+      "body": "Post criado via fetch",
+      "userId": 1
     }
   ]
 }

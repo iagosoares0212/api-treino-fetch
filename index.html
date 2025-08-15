@@ -28,15 +28,26 @@
     // FUNÇÃO PARA CARREGAR POSTS (GET)
     // ===============================
     function carregarPosts() {
-      fetch(API_URL) // Faz uma requisição GET para a API
+      fetch(API_URL) // Faz uma requisição GET (buscar informações) para a API 
+      // ou faz uma requisição HTTP GET para a URL armazenada em API_URL
+      // fetch retorna uma Promise que resolve para um objeto Response do navegador 
+      // Promise - é um "pacote" que representa um valor que ainda não chegou, 
+      // mas que vai chegar no futuro (como um pedido no delivery: você faz o pedido e espera).
+      // "resolve" → quando a operação assíncrona termina com sucesso, a Promise é "resolvida" e entrega o resultado para o próximo .then(...).
+      // Objeto Response → é a “resposta bruta” que o servidor enviou, contendo:
+      // O status (200, 404, 500 etc.); Os headers (informações extras como tipo de conteúdo);
+      // O corpo da resposta (body), que ainda precisa ser convertido para texto ou JSON.
         .then(res => res.json()) // Converte a resposta para JSON
-        .then(posts => {
-          const lista = document.getElementById('lista-posts');
+        .then(posts => { // .then(...) → recebe o resultado da Promise anterior.
+        // posts → é o nome do parâmetro que você escolheu para representar esse resultado.
+        // No caso acima, como .then(res => res.json()) retorna os dados JSON já
+        // convertidos para objeto/array JavaScript, o posts vai conter esses dados.
+          const lista = document.getElementById('lista-posts'); // Essa linha pega o elemento HTML com id="lista-posts" e guarda na variável lista,
+          // para que você possa trabalhar com ele no JavaScript
           lista.innerHTML = ''; // Limpa a lista antes de adicionar novos itens
-
-          // Percorre cada post recebido e cria um <li> na lista
-          posts.forEach(post => {
-            const li = document.createElement('li');
+          posts.forEach(post => { // Para cada elemento dentro do array posts, execute o bloco de código a seguir
+            // usando o nome post para se referir a esse elemento.
+            const li = document.createElement('li'); // cria um elemento html via js que possui a tag <li> ,ou seja, um elemento de uma lista e armazena na variável "li"
             li.textContent = post.title; // Mostra apenas o título
             lista.appendChild(li);
           });
