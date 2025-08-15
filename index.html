@@ -48,8 +48,9 @@
           posts.forEach(post => { // Para cada elemento dentro do array posts, execute o bloco de código a seguir
             // usando o nome post para se referir a esse elemento.
             const li = document.createElement('li'); // cria um elemento html via js que possui a tag <li> ,ou seja, um elemento de uma lista e armazena na variável "li"
-            li.textContent = post.title; // Mostra apenas o título
+            li.textContent = post.title; // Essa linha está pegando o título do objeto post e colocando como texto dentro de um item da lista (<li>)
             lista.appendChild(li);
+            
           });
         })
         .catch(err => console.error('Erro ao carregar posts:', err));
