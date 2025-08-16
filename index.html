@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <title>Lista de Posts</title>
 </head>
+
 <body>
   <h1>Posts</h1>
   <!-- Lista onde vamos renderizar os posts vindos da API -->
@@ -15,89 +17,65 @@
   <button onclick="criarPost()">Adicionar</button>
 
   <script>
-    // ===============================
-    // CONFIGURAÇÃO DA API
-    // ===============================
-    // Aqui definimos a URL da API do json-server
-    // Evitamos usar o nome "URL" para não conflitar com a função nativa do JS
+
     const API_URL = 'http://localhost:3000/posts';
-    // ===============================
-    // FUNÇÃO PARA CARREGAR POSTS (GET)
-    // ===============================
+
     function carregarPosts() {
-      fetch(API_URL) // Faz uma requisição GET (buscar informações) para a API 
-      // ou faz uma requisição HTTP GET para a URL armazenada em API_URL
-      // fetch retorna uma Promise que resolve para um objeto Response do navegador 
-      // Promise - é um "pacote" que representa um valor que ainda não chegou, 
-      // mas que vai chegar no futuro (como um pedido no delivery: você faz o pedido e espera).
-      // "resolve" → quando a operação assíncrona termina com sucesso, a Promise é "resolvida" e entrega o resultado para o próximo .then(...).
-      // Objeto Response → é a “resposta bruta” que o servidor enviou, contendo:
-      // O status (200, 404, 500 etc.); Os headers (informações extras como tipo de conteúdo);
-      // O corpo da resposta (body), que ainda precisa ser convertido para texto ou JSON.
-        .then(res => res.json()) // Converte a resposta para JSON
-        .then(posts => { // .then(...) → recebe o resultado da Promise anterior.
-        // posts → é o nome do parâmetro que você escolheu para representar esse resultado.
-        // No caso acima, como .then(res => res.json()) retorna os dados JSON já
-        // convertidos para objeto/array JavaScript, o posts vai conter esses dados.
-          const lista = document.getElementById('lista-posts'); // Essa linha pega o elemento HTML com id="lista-posts" e guarda na variável lista,
-          // para que você possa trabalhar com ele no JavaScript
-          lista.innerHTML = ''; // Limpa a lista antes de adicionar novos itens
-          posts.forEach(post => { // Para cada elemento dentro do array posts, execute o bloco de código a seguir
-            // usando o nome post para se referir a esse elemento.
-            const li = document.createElement('li'); // cria um elemento html via js que possui a tag <li> ,ou seja, um elemento de uma lista e armazena na variável "li"
-            li.textContent = post.title; // Essa linha está pegando o título do objeto post e colocando como texto dentro de um item da lista (<li>)
-            lista.appendChild(li); // insere o <li> recém-criado como filho da <ul id="lista-posts">
-            
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(posts => {
+          const lista = document.getElementById('lista-posts');
+          lista.innerHTML = '';
+
+          posts.forEach(post => {
+            const li = document.createElement('li');
+            li.textContent = post.title + ' ';
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.onclick = () => {
+              fetch(`${API_URL}/${post.id}`, { method: 'DELETE' })
+                .then(() => carregarPosts())
+                .catch(err => console.error('Erro ao excluir post:', err));
+            };
+
+            li.appendChild(btnExcluir);
+            lista.appendChild(li);
           });
         })
-        .catch(err => console.error('Erro ao carregar posts:', err)); // captura qualquer erro da cadeia (fetch, .json(), ou do próprio .then).
-        // imprime no console uma mensagem + o objeto de erro.
+        .catch(err => console.error('Erro ao carregar posts:', err));
     }
 
-    // ===============================
-    // FUNÇÃO PARA CRIAR POST (POST)
-    // ===============================
     function criarPost() {
-      const titulo = document.getElementById('titulo').value.trim(); //pega o input <input id="titulo">.
-      // lê o valor digitado (.value).
-      // trim() remove espaços do começo e do fim (evita enviar " ").
-      // Validação simples: se o título estiver vazio, não envia
+      const titulo = document.getElementById('titulo').value.trim();
       if (!titulo) {
-        alert('Digite um título antes de enviar!'); //validação: se titulo for string vazia ("" é falsy),
-        //mostra um alert e interrompe a função com return.
+        alert('Digite um título antes de enviar!');
         return;
       }
 
-      // Faz uma requisição POST para a API
-      fetch(API_URL, { 
-        method: 'POST', // Método HTTP
+      fetch(API_URL, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json' // Tipo de conteúdo que estamos enviando: informa que o corpo é JSON.
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ // envia o objeto convertido para string JSON.
-          title: titulo,            // Campo título: recebe o que o usuário digitou;
-          body: 'Post criado via fetch', // Conteúdo fixo (pode ser alterado)
-          userId: 1                 // Apenas um exemplo de campo extra
+        body: JSON.stringify({
+          title: titulo,
+          body: 'Post criado via fetch',
+          userId: 1
         })
       })
-      .then(res => res.json()) // Converte a resposta para JSON
-      .then(data => { //data é o JSON retornado pelo servidor (no json-server, geralmente inclui um id)
-        console.log('Post criado:', data); // Essa linha serve só para depuração — ajuda o programador 
-        // a verificar que o POST deu certo e a ver exatamente o que o servidor retornou. Ela aparece 
-        // rapidamente no console
-        document.getElementById('titulo').value = ''; // limpa o input, colocando ''.
-        carregarPosts(); // Recarrega a lista para incluir o novo post
-      })
-      .catch(err => console.error('Erro ao criar post:', err)); //trata erros do fetch/parsing/then 
-      // desta cadeia e loga no console.
+        .then(res => res.json())
+        .then(data => {
+          console.log('Post criado:', data);
+          document.getElementById('titulo').value = '';
+          carregarPosts();
+        })
+        .catch(err => console.error('Erro ao criar post:', err));
     }
 
-    // ===============================
-    // CARREGAR POSTS AUTOMATICAMENTE
-    // ===============================
-    // Quando a página for carregada, já exibe os posts
     carregarPosts();
-    
+
   </script>
 </body>
+
 </html>

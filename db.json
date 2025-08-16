@@ -1,84 +1,8 @@
 {
   "posts": [
     {
-      "id": "1",
-      "title": "Post 1",
-      "body": "Conteúdo do post 1"
-    },
-    {
-      "id": "2",
-      "title": "Post 2",
-      "body": "Conteúdo do post 2"
-    },
-    {
-      "id": "415d",
-      "title": "",
-      "body": "Conteúdo criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "18cb",
-      "title": "",
-      "body": "Conteúdo criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "ab4c",
-      "title": "Post 5",
-      "body": "Conteúdo criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "7bd0",
-      "title": "Post 6",
-      "body": "Conteúdo criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "9a56",
-      "title": "Post 7",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "475d",
-      "title": "Post 8",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "387a",
-      "title": "A",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "7924",
-      "title": "A",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "583a",
-      "title": "A A",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "d69e",
-      "title": "oLAR",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "c978",
-      "title": "a",
-      "body": "Post criado via fetch",
-      "userId": 1
-    },
-    {
-      "id": "66fb",
-      "title": "a",
+      "id": "b39b",
+      "title": "Elemento 1",
       "body": "Post criado via fetch",
       "userId": 1
     }
