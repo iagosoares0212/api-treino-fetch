@@ -9,7 +9,7 @@
 <body>
   <!-- Título principal da página -->
   <h1>Posts</h1>
-  
+
   <!-- Lista onde os posts vão ser exibidos -->
   <ul id="lista-posts"></ul>
 
@@ -110,6 +110,132 @@
     // Chama a função assim que a página carregar, exibindo os posts existentes
     carregarPosts();
 
+  </script>
+
+  <script>
+    // reescrevendo a função carregarPosts() com async/await
+    async function carregarPosts() {
+      try {
+        const res = await fetch(API_URL);
+        const posts = await res.json();
+
+        const lista = document.getElementById('lista-posts');
+        lista.innerHTML = '';
+
+        posts.forEach(post => {
+          const li = document.createElement('li');
+          li.textContent = post.title + ' ';
+
+          // Botão Excluir
+          const btnExcluir = document.createElement('button');
+          btnExcluir.textContent = 'Excluir';
+          btnExcluir.onclick = async () => {
+            try {
+              await fetch(`${API_URL}/${post.id}`, { method: 'DELETE' });
+              await carregarPosts();
+            } catch (err) {
+              console.error('Erro ao excluir post:', err);
+            }
+          };
+
+          // Botão Editar
+          const btnEditar = document.createElement('button');
+          btnEditar.textContent = 'Editar';
+          btnEditar.onclick = async () => {
+            const novoTitulo = prompt('Editar título do post:', post.title);
+            if (novoTitulo) {
+              try {
+                await fetch(`${API_URL}/${post.id}`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    title: novoTitulo,
+                    body: post.body,
+                    userId: post.userId
+                  })
+                });
+                await carregarPosts();
+              } catch (err) {
+                console.error('Erro ao editar post:', err);
+              }
+            }
+          };
+
+          li.appendChild(btnExcluir);
+          li.appendChild(btnEditar);
+          lista.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error('Erro ao carregar posts:', err);
+      }
+    }
+
+  </script>
+
+  <script>
+    // função carregar posts resumida
+    // Usar async / await → elimina vários.then() aninhados.
+    // Extrair a criação dos botões em uma função auxiliar → deixa o código mais limpo.
+    // Usar desestruturação({ id, title, body, userId }) em vez de post.id, post.title, etc.
+
+    async function carregarPosts() {
+      try {
+        const res = await fetch(API_URL);
+        const posts = await res.json();
+
+        const lista = document.getElementById('lista-posts');
+        lista.innerHTML = '';
+
+        posts.forEach(({ id, title, body, userId }) => {
+          const li = document.createElement('li');
+          li.textContent = title + ' ';
+
+          // Botão Excluir
+          const btnExcluir = criarBotao('Excluir', async () => {
+            try {
+              await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+              carregarPosts();
+            } catch (err) {
+              console.error('Erro ao excluir post:', err);
+            }
+          });
+
+          // Botão Editar
+          const btnEditar = criarBotao('Editar', async () => {
+            const novoTitulo = prompt('Editar título do post:', title);
+            if (novoTitulo) {
+              try {
+                await fetch(`${API_URL}/${id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ title: novoTitulo, body, userId })
+                });
+                carregarPosts();
+              } catch (err) {
+                console.error('Erro ao editar post:', err);
+              }
+            }
+          });
+
+          li.append(btnExcluir, btnEditar);
+          lista.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error('Erro ao carregar posts:', err);
+      }
+    }
+
+    // Função auxiliar para criar botões
+    function criarBotao(texto, onClick) {
+      const btn = document.createElement('button');
+      btn.textContent = texto;
+      btn.onclick = onClick;
+      return btn;
+    }
   </script>
   
 </body>

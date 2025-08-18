@@ -1,10 +1,16 @@
 {
   "posts": [
     {
-      "id": "aa57",
+      "id": "2d2b",
       "title": "Elemento 1",
       "body": "Post criado via fetch",
       "userId": 1
+    },
+    {
+      "title": "Elemento 2",
+      "body": "Post criado via fetch",
+      "userId": 1,
+      "id": "2f7a"
     }
   ]
 }
